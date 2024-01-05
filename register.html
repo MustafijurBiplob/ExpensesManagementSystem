@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Registration</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 16px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #4caf50;
+            color: #fff;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .login-link {
+            margin-top: 10px;
+        }
+
+        .login-link i {
+            margin-right: 5px;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #ddd;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+
+        .requirements-list li {
+            color: red;
+        }
+
+        .requirements-list .valid {
+            color: green;
+        }
+
+        .error-message {
+            color: red;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <form id="registrationForm" action="register.php" method="post" onsubmit="return validatePassword()">
+            <h2 class="mb-4"><i class="fas fa-user-plus"></i> User Registration</h2>
+            <label for="username"><i class="fas fa-user"></i> Username:</label>
+            <input type="text" id="username" name="username" class="form-control" required>
+
+            <label for="password"><i class="fas fa-lock"></i> Password:</label>
+            <input type="password" id="password" name="password" class="form-control" required>
+            <small>Password must contain:</small>
+            <ul class="requirements-list">
+                <li id="uppercase">Minimum one uppercase letter (A-Z)</li>
+                <li id="lowercase">Minimum one lowercase letter (a-z)</li>
+                <li id="special">Minimum one special character</li>
+                <li id="number">Minimum one number</li>
+                <li id="length">Minimum 6 characters</li>
+            </ul>
+            <div class="error-message" id="passwordError"></div>
+
+            <label for="confirmPassword"><i class="fas fa-lock"></i> Confirm Password:</label>
+            <input type="password" id="confirmPassword" name="confirmPassword" class="form-control" required>
+
+            <button type="submit" class="btn btn-success">Register</button>
+            <p class="login-link">Already registered? <i class="fas fa-lock"></i><a href="login.html"> Login here</a></p>
+        </form>
+    </div>
+
+    <footer>
+        <p>&copy; 2023 Mustafijur Rahman</p>
+    </footer>
+
+    <!-- Font Awesome JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js"></script>
+    <!-- Bootstrap JS and Popper.js -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <!-- Custom JavaScript for dynamic color and password validation -->
+    <script>
+        document.getElementById("password").addEventListener("input", function () {
+            const password = this.value;
+            document.getElementById("uppercase").classList.toggle("valid", /[A-Z]/.test(password));
+            document.getElementById("lowercase").classList.toggle("valid", /[a-z]/.test(password));
+            document.getElementById("special").classList.toggle("valid", /[!@#$%^&*(),.?":{}|<>]/.test(password));
+            document.getElementById("number").classList.toggle("valid", /\d/.test(password));
+            document.getElementById("length").classList.toggle("valid", password.length >= 6);
+        });
+
+        function validatePassword() {
+            const password = document.getElementById("password").value;
+            const isUppercase = /[A-Z]/.test(password);
+            const isLowercase = /[a-z]/.test(password);
+            const isSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+            const isNumber = /\d/.test(password);
+            const isLengthValid = password.length >= 6;
+
+            if (!(isUppercase && isLowercase && isSpecialChar && isNumber && isLengthValid)) {
+                document.getElementById("passwordError").innerText = "Password does not meet the required conditions.";
+                return false;
+            } else {
+                document.getElementById("passwordError").innerText = "";
+                return true;
+            }
+        }
+    </script>
+</body>
+</html>
